@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+import json
 
 from jwt import decode
 
@@ -38,6 +40,18 @@ def check_access_token(access_token, api=False):
         raise Exception('belonging to an unregistered user.')
 
     return payload
+
+
+def get_token_by_name(name):
+    tokens_file = "/YourPandoraPath/access_tokens.json"
+
+    if not os.path.isfile(tokens_file):
+        raise Exception('Error: {} is not a file.'.format(tokens_file))
+
+    with open(tokens_file, 'r') as f:
+        tokens = json.loads(f.read())
+
+    return tokens.get(name)
 
 
 def check_access_token_out(access_token, api=False):
